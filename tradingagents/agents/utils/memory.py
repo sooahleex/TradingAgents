@@ -1,25 +1,24 @@
 import chromadb
 from chromadb.config import Settings
-from openai import OpenAI
+import cohere
+import os
 
 
 class FinancialSituationMemory:
     def __init__(self, name, config):
-        if config["backend_url"] == "http://localhost:11434/v1":
-            self.embedding = "nomic-embed-text"
-        else:
-            self.embedding = "text-embedding-3-small"
-        self.client = OpenAI(base_url=config["backend_url"])
+        self.config = config
+        self.cohere_client = cohere.Client(os.getenv("COHERE_API_KEY"))
         self.chroma_client = chromadb.Client(Settings(allow_reset=True))
         self.situation_collection = self.chroma_client.create_collection(name=name)
 
     def get_embedding(self, text):
-        """Get OpenAI embedding for a text"""
-        
-        response = self.client.embeddings.create(
-            model=self.embedding, input=text
+        """Get embedding for a text using Cohere"""
+        response = self.cohere_client.embed(
+            texts=[text],
+            model="embed-english-v3.0",
+            input_type="search_query",
         )
-        return response.data[0].embedding
+        return response.embeddings[0]
 
     def add_situations(self, situations_and_advice):
         """Add financial situations and their corresponding advice. Parameter is a list of tuples (situation, rec)"""

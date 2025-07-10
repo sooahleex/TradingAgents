@@ -14,6 +14,7 @@ from tqdm import tqdm
 import yfinance as yf
 from openai import OpenAI
 from .config import get_config, set_config, DATA_DIR
+import anthropic
 
 
 def get_finnhub_news(
@@ -805,3 +806,57 @@ def get_fundamentals_openai(ticker, curr_date):
     )
 
     return response.output[1].content[0].text
+
+
+def get_stock_news_anthropic(ticker, curr_date):
+    config = get_config()
+    # api_key를 명시하지 않으면 환경변수(ANTHROPIC_API_KEY)를 자동으로 사용함
+    client = anthropic.Anthropic()
+    prompt = (
+        f"Can you search Social Media for {ticker} from 7 days before {curr_date} to {curr_date}? "
+        "Make sure you only get the data posted during that period."
+    )
+    response = client.messages.create(
+        model=config.get("anthropic_model", "claude-3-opus-20240229"),
+        max_tokens=4096,
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
+    )
+    return response.content[0]
+
+
+def get_global_news_anthropic(curr_date):
+    config = get_config()
+    # api_key를 명시하지 않으면 환경변수(ANTHROPIC_API_KEY)를 자동으로 사용함
+    client = anthropic.Anthropic()
+    prompt = (
+        f"Can you search global or macroeconomics news from 7 days before {curr_date} to {curr_date} that would be informative for trading purposes? "
+        "Make sure you only get the data posted during that period."
+    )
+    response = client.messages.create(
+        model=config.get("anthropic_model", "claude-3-opus-20240229"),
+        max_tokens=4096,
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
+    )
+    return response.content[0]
+
+
+def get_fundamentals_anthropic(ticker, curr_date):
+    config = get_config()
+    # api_key를 명시하지 않으면 환경변수(ANTHROPIC_API_KEY)를 자동으로 사용함
+    client = anthropic.Anthropic()
+    prompt = (
+        f"Can you search Fundamental for discussions on {ticker} during of the month before {curr_date} to the month of {curr_date}. "
+        "Make sure you only get the data posted during that period. List as a table, with PE/PS/Cash flow/ etc"
+    )
+    response = client.messages.create(
+        model=config.get("anthropic_model", "claude-3-opus-20240229"),
+        max_tokens=4096,
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
+    )
+    return response.content[0]
