@@ -1,12 +1,13 @@
 # TradingAgents/graph/signal_processing.py
-
+from typing import Union
+from langchain_anthropic import ChatAnthropic
 from langchain_openai import ChatOpenAI
 
 
 class SignalProcessor:
     """Processes trading signals to extract actionable decisions."""
 
-    def __init__(self, quick_thinking_llm: ChatOpenAI):
+    def __init__(self, quick_thinking_llm: Union[ChatOpenAI, ChatAnthropic]):
         """Initialize with an LLM for processing."""
         self.quick_thinking_llm = quick_thinking_llm
 

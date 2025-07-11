@@ -818,7 +818,7 @@ def get_stock_news_anthropic(ticker, curr_date):
     )
     response = client.messages.create(
         model=config.get("anthropic_model", "claude-3-opus-20240229"),
-        max_tokens=4096,
+        max_tokens=16384,
         messages=[
             {"role": "user", "content": prompt}
         ]
@@ -836,7 +836,7 @@ def get_global_news_anthropic(curr_date):
     )
     response = client.messages.create(
         model=config.get("anthropic_model", "claude-3-opus-20240229"),
-        max_tokens=4096,
+        max_tokens=16384,
         messages=[
             {"role": "user", "content": prompt}
         ]
@@ -854,7 +854,7 @@ def get_fundamentals_anthropic(ticker, curr_date):
     )
     response = client.messages.create(
         model=config.get("anthropic_model", "claude-3-opus-20240229"),
-        max_tokens=4096,
+        max_tokens=16384,
         messages=[
             {"role": "user", "content": prompt}
         ]
