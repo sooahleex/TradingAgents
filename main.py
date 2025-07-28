@@ -17,7 +17,7 @@ config["online_tools"] = True  # Increase debate rounds
 ta = TradingAgentsGraph(debug=True, config=config)
 
 # forward propagate
-_, decision = ta.propagate("CRCL", "2025-07-10")
+_, decision = ta.propagate("LEU", "2025-07-28")
 print(decision)
 
 # Memorize mistakes and reflect

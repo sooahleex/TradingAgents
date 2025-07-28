@@ -835,7 +835,7 @@ def get_global_news_anthropic(curr_date):
         "Make sure you only get the data posted during that period."
     )
     response = client.messages.create(
-        model=config.get("anthropic_model", "claude-3-opus-20240229"),
+        model=config.get("anthropic_model", "claude-3-5-sonnet-20240620"),
         max_tokens=16384,
         messages=[
             {"role": "user", "content": prompt}
@@ -853,7 +853,7 @@ def get_fundamentals_anthropic(ticker, curr_date):
         "Make sure you only get the data posted during that period. List as a table, with PE/PS/Cash flow/ etc"
     )
     response = client.messages.create(
-        model=config.get("anthropic_model", "claude-3-opus-20240229"),
+        model=config.get("anthropic_model", "claude-3-5-sonnet-20240620"),
         max_tokens=16384,
         messages=[
             {"role": "user", "content": prompt}
